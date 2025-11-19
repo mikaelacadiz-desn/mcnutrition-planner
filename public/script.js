@@ -25,6 +25,7 @@ const getFormData = () => {
             json[el.name] = el.checked
         }
         // Keep number and range inputs as strings to match Prisma schema
+        // Set to null if empty
         else if (el.type === 'number' || el.type === 'range') {
             json[el.name] = isEmpty ? null : value
         }
@@ -32,7 +33,20 @@ const getFormData = () => {
         else if (el.type === 'date') {
             json[el.name] = isEmpty ? null : new Date(value).toISOString()
         }
+        // Handle regular text inputs - set to null if empty
+        else if (isEmpty && el.type === 'text') {
+            json[el.name] = null
+        }
     })
+
+    // Handle select dropdowns - set to null if empty
+    myForm.querySelectorAll('select').forEach(el => {
+        const value = json[el.name]
+        if (!value || value.trim() === '') {
+            json[el.name] = null
+        }
+    })
+    
     return json
 }
 
@@ -72,7 +86,8 @@ const saveItem = async (data) => {
             try {
                 const errorData = await response.json()
                 console.error('Error:', errorData)
-                alert(errorData.error || response.statusText)
+                const errorMessage = errorData.details || errorData.error || response.statusText
+                alert('Failed to save: ' + errorMessage)
             }
             catch (err) {
                 console.error(response.statusText)

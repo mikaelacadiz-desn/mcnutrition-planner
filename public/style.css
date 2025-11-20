@@ -1,7 +1,11 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     min-height: 100vh;
-    width: 100%;
     margin: 0;
+    padding: 0 80px;
     text-align: center;
     font-family: "Jost", sans-serif;
     font-optical-sizing: auto;
@@ -11,6 +15,8 @@ body {
     flex-direction: column;
     align-items: center;
     background-color: #f8f9fa;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 
@@ -93,6 +99,15 @@ button.cancel:hover {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+main {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 /* Responsive layout for smaller screens */

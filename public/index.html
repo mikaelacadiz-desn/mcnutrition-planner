@@ -219,51 +219,6 @@
     <section id="contentArea"></section>
   </main>
 
-  <section id="intro">
-    <h3>About</h3>
-    <p>Previously we explored approaches to <a
-        href="https://github.com/ixd-system-design/API-Endpoints-for-Publishing-and-Searching"
-      >Publishing Data</a> and <a href="https://github.com/ixd-system-design/Collecting-Data">Collecting Data</a> by
-      means of API Endpoints (backend) and HTML forms (frontend). Having thus addressed the first two letters of
-      <a href="https://developer.mozilla.org/en-US/docs/Glossary/CRUD">CRUD</a> ("Create" and Read"), let's now
-      implement the last two letters as well ("Update" and "Delete"). This will
-      allow us to manage the full lifecycle of data records in our database.
-    </p>
-    <p>In order to operate on existing documents, we need to identify them by ID. The following two endpoints will
-      assume that we pass along the ID of the item to be updated or deleted:
-    <ol>
-      <li>An Express endpoint listens for HTTP <a
-          href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/PUT"
-        >PUT</a> requests, with an ID parameter and a body payload (the updated data). Prisma
-        finds the corresponding document in the database and replaces it with the new data.</li>
-      <li>An Express endpoint listens for HTTP <a
-          href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/PUT"
-        >DELETE</a> requests, with an ID paramater passed along. Prisma finds the corresponding document and
-        removes it from the database.</li>
-    </ol>
-    </p>
-    <p>
-      To support these new operations on the frontend, we have adjusted the form behaviour. When editing an item, the
-      ID of the item is stored in a hidden input field. This allows us to track which item is being edited, and send
-      the correct ID to the backend when submitting updates. We also use the ID in the display template, so that the
-      Edit and Delete buttons can function correctly, and so that we can identify which item to remove when deleting.
-    </p>
-
-    <h3>Learning Prompts</h3>
-    <p>Can you add a connection string to the NodeJS environment (e.g. .env file) for your own MongoDB Atlas Cluster?
-    </p>
-    <p>Use MongoDB Compass to verify that your data collection form is working. </p>
-    <p>Try out all CRUD operations: Create a new menu item, Edit an existing item by clicking the Edit button, and Delete an item
-      you no longer need.</p>
-    <p>Explore the API endpoints in your browser: visit /data to see all menu items in JSON format, or try /search?terms=Burger
-      to search for specific items.</p>
-  </section>
-
-  <footer>
-    Created by <a href="https://nsitu.ca">Harold Sikkema</a> in the context of
-    Systems Design in the Interaction Design program at Sheridan College.
-  </footer>
-
   <script
     src="script.js?v=2"
     type="module"

@@ -261,16 +261,16 @@ textarea:user-invalid+.validation {
 }
 
 .item-card h3 {
-    font-size: 2rem;
+    font-size: 1.2rem;
     margin: 0 0 1rem 0;
     color: #333;
 }
 
 .item-heading {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: start;
-    justify-content: space-between;
+    justify-content: flex-start;
     width: 100%;
 }
 

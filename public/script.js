@@ -98,7 +98,7 @@ const saveItem = async (data) => {
 
         const result = await response.json()
         console.log('Saved:', result)
-
+        alert('Menu item saved successfully!')
 
         // Refresh the data list
         getData()
@@ -226,6 +226,7 @@ const renderItem = (item) => {
 
 // fetch items from API endpoint and populate the content div
 const getData = async () => {
+    console.log('getData() called - fetching menu items...')
     try {
         const response = await fetch('/data')
 
@@ -235,6 +236,7 @@ const getData = async () => {
 
             const data = await response.json()
             console.log('Fetched data:', data)
+            console.log('Number of items:', data.length)
 
             if (data.length == 0) {
                 contentArea.innerHTML = '<p><i>No data found in the database.</i></p>'

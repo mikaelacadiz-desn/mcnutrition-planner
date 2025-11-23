@@ -430,7 +430,7 @@ textarea:user-invalid+.validation {
     padding: 1.5rem;
     margin: 1rem 0;
     background: #ffffff;
-    border: 1px solid #666;
+    border: 1px solid #ddd;
     display: flex;
     flex-direction: column;
     align-items: start;

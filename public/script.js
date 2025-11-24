@@ -412,9 +412,13 @@ cancelButton.addEventListener('click', () => {
     formPopover.hidePopover()
 })
 
-// Add search and filter event listeners
-searchInput.addEventListener('input', filterAndDisplayItems)
-categoryFilter.addEventListener('change', filterAndDisplayItems)
+// Add search and filter event listeners only if elements exist
+if (searchInput) {
+    searchInput.addEventListener('input', filterAndDisplayItems)
+}
+if (categoryFilter) {
+    categoryFilter.addEventListener('change', filterAndDisplayItems)
+}
 
 // Load initial data
 getData()

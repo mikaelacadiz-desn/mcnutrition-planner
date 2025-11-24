@@ -2,6 +2,28 @@
     box-sizing: border-box;
 }
 
+.switch-site-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 0.75rem 1.5rem;
+    background: #DA291C;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    z-index: 9999;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.switch-site-btn:hover {
+    background: #b82318;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
 body {
     min-height: 100vh;
     margin: 0;

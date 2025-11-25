@@ -858,7 +858,7 @@ Made changes.
 
 //End of prompt and response.
 
-//Here Mikaela 
+//Here Mikaela asked copilot to align the menu item's contents into a hierarchy.
 
 mikaelacadiz-desn: Actually, make it so that the trash/edit icons are on a separate line from the category. So it will go like this:
 Row 1: Edit/trash icon
@@ -908,6 +908,10 @@ Done! Reduced the spacing between the category, display name, and grams rows fro
 
 Made changes.
 
+//End of prompt and response.
+
+//Mikaela asked copilot to change the backround colour to a shaded white and the item's background to white.
+
 mikaelacadiz-desn: Change the background colour to: #f8f9fa
 For all of the items displayed, change the background to #ffffff
 
@@ -923,6 +927,10 @@ Done! The background is already set to `#f8f9fa` and I've updated the item cards
 
 Made changes.
 
+//End of prompt and response.
+
+//Mikaela asked copilot to put a border around the menu items.
+
 mikaelacadiz-desn: Put a thin 1px border around each menu item with ##e9ecef
 
 GitHub Copilot: Using "Replace String in File"
@@ -934,6 +942,10 @@ GitHub Copilot: Using "Replace String in File"
 Done! Added a 1px border with color `#e9ecef` around each menu item card.
 
 Made changes.
+
+//End of prompt and response.
+
+//Here Mikaela asked copilot to increase the width of the first nutritional column.
 
 mikaelacadiz-desn: Underneath nutrition facts, there are two columns that splits the nutritional values. Increase the width of the first column. 
 
@@ -950,6 +962,10 @@ Using "Replace String in File"
 Done! Changed the nutrition grid to use `auto 1fr` instead of `1fr 1fr`, which makes the first column (labels) only as wide as needed and gives the remaining space to the second column (values).
 
 Made changes.
+
+//End of prompt and response.
+
+//Mikaela asked copilot to remove the menu items label. As well she asked copilot to move the search bar and filter to the left and to replace the add menu button into a yellow plus svg.
 
 mikaelacadiz-desn: Please remove the text "Menu items". 
 Where the search button and category drop-down are, please keep that on the left side. On the right side, change the "add menu item" button to the plus.svg in the assets folder, and change the green color of the button to #ffbc0e. 
@@ -975,6 +991,10 @@ Done! I've made the following changes:
 5. The button now has a hover effect that darkens to `#e5a900`
 
 Made changes.
+
+//End of prompt and response.
+
+//Mikaela asked copilot to make the plus icon in the svg white and to show them where the search bar code is.
 
 mikaelacadiz-desn: Change plus.svg from black to #ffffff. 
 Show me where the code is for the search input field. 
@@ -1030,6 +1050,10 @@ searchInput.addEventListener('input', filterAndDisplayItems)
 ```
 
 Made changes.
+
+//End of prompt and response.
+
+//Mikaela asked copilot where the code was for the "catagory" drop-down menu.
 
 mikaelacadiz-desn: Where is the code to edit the "category" drop-down within the pop-up box?
 
@@ -1126,6 +1150,10 @@ Done! Changed the select dropdown height to 20px.
 
 Made changes.
 
+//End of prompt and response.
+
+//Here Mikaela asked copilot to make a hover animation for each item and to change the border colour.
+
 mikaelacadiz-desn: Please add a basic hover animation for each item card, and change the border colour to #ffbc0d
 
 GitHub Copilot: Using "Replace String in File"
@@ -1142,6 +1170,10 @@ Done! Added a hover animation that:
 
 Made changes.
 
+//End of prompt and response.
+
+//Mikaela asked copilot to change the drop show to black.
+
 mikaelacadiz-desn: You can change the shadow blur to normal black.
 
 GitHub Copilot: Using "Replace String in File"
@@ -1153,6 +1185,10 @@ GitHub Copilot: Using "Replace String in File"
 Done! Changed the hover shadow from yellow to black with `rgba(0, 0, 0, 0.15)`.
 
 Made changes.
+
+//End of prompt and response.
+
+//Mikaela asked copilot to add a yes button when the delete pop up appears.
 
 mikaelacadiz-desn: When I press trash.svg to delete the item, there is only a "cancel" button pop-up. Please make two buttons: a cancel button and a "yes" button, so that when I press "yes", I can actually delete the item from the database. 
 
@@ -1193,6 +1229,10 @@ The functionality to delete from the database is already implemented in the Java
 
 Made changes.
 
+//End of prompt and response.
+
+//Mikaela asked copilot to add the previous code again.
+
 mikaelacadiz-desn: Please add the code again. 
 
 GitHub Copilot: Read [](file:///Users/mk/Documents/menu/public/style.css#608-608), lines 608 to 638
@@ -1212,6 +1252,10 @@ Done! I've added the code to:
 The delete modal should now show both the "Delete" and "Cancel" buttons properly.
 
 Made changes.
+
+//End of prompt and response.
+
+//Here Mikaela asked copilot how she would make the catagory drop-down menu show.
 
 mikaelacadiz-desn: When I want to add a new menu item, and want to add the category, when I select the category in the drop-down menu, it does not show. How can I make it so that it shows?
 
@@ -1234,6 +1278,10 @@ Now when you select a category, it should display properly in the dropdown.
 
 Made changes.
 
+//End of prompt and response.
+
+//Mikaela asked copilot to change the height of the pop up.
+
 mikaelacadiz-desn: When inputting the name of the item within the pop-up, can you also change the height to 3em?
 
 GitHub Copilot: Read [](file:///Users/mk/Documents/menu/public/style.css#320-320), lines 320 to 350
@@ -1247,6 +1295,10 @@ Using "Replace String in File"
 Done! I've set the height to 3rem for both text inputs (like the item name field) and number inputs (like the nutrition fields), as well as select dropdowns. This ensures all form inputs have a consistent height of 3rem throughout the popup form.
 
 Made changes.
+
+//End of prompt and response.
+
+//Here Mikaela asked copilot to add a X icon into the pop up menu and to make that icon close the menu when pressed.
 
 mikaelacadiz-desn: In the pop-up menu, above the rest of the content, please add "x.svg" from the assets folder. Pressing the x.svg icon will close the pop-up.
 
@@ -1279,6 +1331,10 @@ The button uses the `popovertarget` and `popovertargetaction="hide"` attributes 
 
 Made changes.
 
+//End of prompt and response.
+
+//Mikaela asked copilot to add a bottom margin for the X icon.
+
 mikaelacadiz-desn: Add a bottom margin of 20px underneath the x.svg image. 
 
 GitHub Copilot: Using "Replace String in File"
@@ -1290,6 +1346,10 @@ GitHub Copilot: Using "Replace String in File"
 Done! Added a 20px bottom margin to the close button containing the x.svg image.
 
 Made changes.
+
+//End of prompt and response.
+
+//Mikaela asked copilot to merger the two css files.
 
 mikaelacadiz-desn: Can you please integrate these two files so that everything is just in style.css?
 
@@ -1316,6 +1376,10 @@ Done! I've integrated all the styles from `styles.css` into style.css. The addit
 All the styles are now consolidated in style.css. You can safely delete `styles.css` if you'd like.
 
 Made changes.
+
+//End of prompt and response.
+
+//Mikaela asked copilot to merge the two index.html files.
 
 mikaelacadiz-desn: Can you please integrate these two files so that everything is just in index.html?
 
@@ -1357,6 +1421,10 @@ All the existing functionality in index.html (form popover, search, category fil
 
 Made changes.
 
+//End of prompt and response.
+
+//Here Mikaela asked copilot to undo the previous request.
+
 mikaelacadiz-desn: Actually, undo that code. 
 
 GitHub Copilot: Using "Replace String in File"
@@ -1376,6 +1444,10 @@ Using "Replace String in File"
 Done! Reverted the changes back to the original index.html.
 
 Made changes.
+
+//End of prompt and response.
+
+//Here Mikaela asked copilot to undo the merging of the css files.
 
 mikaelacadiz-desn: can you undo the code with the css files? I would like two css files again.
 
@@ -1399,6 +1471,10 @@ Done! I've separated the CSS files again:
 Both files are now separate as they were before.
 
 Made changes.
+
+//End of prompt and response.
+
+//Mikaela asked copilot to make a button on the top right of the website to change from manager view to customer view.
 
 mikaelacadiz-desn: On the top right of the website, there will be a button that will interchange between two states: Manager View, and Customer View.
 
@@ -1477,6 +1553,10 @@ Done! I've implemented the view toggle functionality:
 
 Made changes.
 
+//End of prompt and response.
+
+//Mikaela asked copilot to make the button smaller and align it to the top right.
+
 mikaelacadiz-desn: Can you change it so that the button is small and is at the very top right?  like Top top of the screen
 
 GitHub Copilot: Using "Replace String in File"
@@ -1493,6 +1573,10 @@ Done! Changed the button to:
 - Stays in position even when scrolling (fixed positioning)
 
 Made changes.
+
+//End of prompt and response.
+
+//Here Mikaela asked copilot to increase the page padding.
 
 mikaelacadiz-desn: Can you change the page padding of the page showing index2.html? Perhaps 100px all around. 
 
@@ -1515,6 +1599,10 @@ Using "Replace String in File"
 Summarized conversation historyAdded 100px padding to the customer view. The padding is applied on all sides and the default margin is removed for a clean, spacious layout.
 
 Made changes.
+
+//End of prompt and response.
+
+//Here Mikaela asked copilot to align the filter results to the right.
 
 mikaelacadiz-desn: On the customer view page, the filter results show the category and then the items found, like the following: 
 "Burgers & Sandwiches
@@ -1547,6 +1635,10 @@ Done! The category headings and item counts in the customer view are now right-a
 
 Made changes.
 
+//End of prompt and response.
+
+//Mikaela asked copilot to move the secondary header under the primary header.
+
 mikaelacadiz-desn: The text that says "Browse McDonald's menu items and their nutritional information" should be right underneath "McDonald's Menu & Nutrition" as a secondary  header. 
 
 GitHub Copilot: Read [](file:///Users/mk/Documents/menu/public/index2.html)
@@ -1576,6 +1668,10 @@ Using "Replace String in File"
 Perfect! The paragraph text "Browse McDonald's menu items and their nutritional information" is now styled as a secondary header right underneath the main title, with reduced spacing and a subtle gray color.
 
 Made changes.
+
+//End of prompt and response.
+
+//Here Mikaela asked copilot how to make it so that when a new item is added to the database it will appear in the customer view. 
 
 mikaelacadiz-desn: When we add a new menu item under the manager view page, how can we connect it to the database so that it shows as a new option on the customer view page? 
 
@@ -1627,6 +1723,10 @@ Both pages now pull from your local MongoDB database through the same Prisma API
 
 Made changes.
 
+//End of prompt and response.
+
+//Here Mikaela asked copilot to make the newly added items follow the same format as the items from the JSON data.
+
 mikaelacadiz-desn: When I add grams in the following format:
 (5g) 
 or
@@ -1669,6 +1769,10 @@ with the "5g" in yellow and bold.
 
 Made changes.
 
+//End of prompt and response.
+
+//Mikaela asked copilot to apply the same logic for ounces.
+
 mikaelacadiz-desn: I would like the same logic to be applied to ounces. 
 
 GitHub Copilot: Read [](file:///Users/mk/Documents/menu/public/items.js#125-125), lines 125 to 155
@@ -1703,6 +1807,10 @@ All weight information will be:
 Note: If both grams and ounces are present (like "5.0 oz (250 g)"), it will only show the grams value since that's typically the more precise measurement.
 
 Made changes.
+
+//End of prompt and response.
+
+//Mikaela asked copilot to add comments to the code explaining it.
 
 mikaelacadiz-desn: Please add comments to all the code explaining what it does.
 
@@ -1804,6 +1912,10 @@ This should make the codebase much easier to understand and maintain!
 
 Made changes.
 
+//End of prompt and response.
+
+//Here Mikaela askes copilot why and error is appearing.
+
 mikaelacadiz-desn: Why is it giving me this error and how do I fix it?
 hint: You have divergent branches and need to specify how to reconcile them.
 hint: You can do so by running one of the following commands sometime before
@@ -1886,6 +1998,10 @@ Your repository is now synchronized with the remote, and all your comprehensive 
 
 Made changes.
 
+//End of prompt and response.
+
+//Mikaela askes copilot to remove the customer view button.
+
 mikaelacadiz-desn: Can you remove the red "view customer site" button? 
 
 GitHub Copilot: Read [](file:///Users/mk/Documents/menu/public/index.html#1-1), lines 1 to 101
@@ -1899,6 +2015,10 @@ Using "Replace String in File"
 Done! I've removed the red "View Customer Site" button from the manager view page.
 
 Made changes.
+
+//End of prompt and response.
+
+//Here Mikaela asks copilot to make a downloadable pdf of the chat.
 
 mikaelacadiz-desn: can you make a downloadable pdf of this entire chat for meplease
 
@@ -1920,3 +2040,5 @@ You can use online tools like:
 - Copy the JSON content into a document editor and export as PDF
 
 Would you like me to help you format the chat content if you share what's in the JSON file? I can create a nicely formatted HTML document that you can easily save as a PDF.
+
+//End of prompt and response.

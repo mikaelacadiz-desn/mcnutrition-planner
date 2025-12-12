@@ -94,7 +94,7 @@ async function createNutritionalFilters(menuItems) {
   // Initialize imports
   await initializeImports();
   
-  const main = document.querySelector('main');
+  const main = document.querySelector('.main-content');
   
   // Create nutritional filter container
   const nutritionalFilterContainer = document.createElement('div');
@@ -204,23 +204,58 @@ async function createNutritionalFilters(menuItems) {
   
   nutritionalFilterContainer.appendChild(buttonContainer);
   
-  // Create a grid wrapper for two-column layout
-  const contentGrid = document.createElement('div');
-  contentGrid.classList.add('content-grid');
+  // Create popup for nutritional filters
+  const popup = document.createElement('div');
+  popup.id = 'nutritionalFilterPopup';
+  popup.classList.add('filter-popup');
+  
+  // Close button
+  const closeBtn = document.createElement('button');
+  closeBtn.classList.add('filter-popup-close');
+  closeBtn.innerHTML = '&times;';
+  closeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    popup.classList.remove('show');
+  });
+  
+  nutritionalFilterContainer.insertBefore(closeBtn, nutritionalFilterContainer.firstChild);
+  popup.appendChild(nutritionalFilterContainer);
+  
+  // Keep popup open when hovering over it
+  popup.addEventListener('mouseenter', () => {
+    popup.classList.add('show');
+  });
+  
+  // Hide popup when mouse leaves
+  popup.addEventListener('mouseleave', () => {
+    popup.classList.remove('show');
+  });
+  
+  // Prevent popup from closing when clicking inside it
+  popup.addEventListener('click', (e) => {
+    e.stopPropagation();
+  });
+  
+  // Add popup to the filter container area
+  const filterContainer = document.querySelector('.filter-container');
+  filterContainer.appendChild(popup);
+  
+  // Close popup when clicking anywhere outside
+  document.addEventListener('click', (e) => {
+    const popup = document.getElementById('nutritionalFilterPopup');
+    const filterButton = document.getElementById('filterButton');
+    if (popup && !popup.contains(e.target) && !filterButton.contains(e.target)) {
+      popup.classList.remove('show');
+    }
+  });
   
   // Find the results container
   const resultsContainer = document.getElementById('results-container');
   
-  // Insert the grid after the category filter container
+  // Insert results container after the filter container (no grid wrapper needed)
   const categoryFilter = document.querySelector('.filter-container');
-  main.insertBefore(contentGrid, categoryFilter.nextSibling);
-  
-  // Move nutritional filters into the left column
-  contentGrid.appendChild(nutritionalFilterContainer);
-  
-  // Move results container into the right column
-  if (resultsContainer) {
-    contentGrid.appendChild(resultsContainer);
+  if (resultsContainer && categoryFilter) {
+    main.insertBefore(resultsContainer, categoryFilter.nextSibling);
   }
   
   // Store menu items for filtering

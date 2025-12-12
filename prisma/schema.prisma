@@ -7,6 +7,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
+
 model menu {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
   CAL      String? // Calories
@@ -21,4 +23,41 @@ model menu {
   SFAT     String? // Saturated Fat
   SGR      String? // Sugars
   TFAT     String? // Trans Fat
+}
+
+model users {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  auth0Id       String   @unique // Auth0 user ID
+  email         String?
+  name          String?
+  picture       String?
+  lastLogin     DateTime @default(now())
+  createdAt     DateTime @default(now())
+}
+
+model meals {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId         String   // Auth0 user ID
+  mealName       String
+  items          Json     // Array of menu items with their data
+  totalNutrition Json     // Total nutritional values
+  createdAt      DateTime @default(now())
+}
+
+model savedLogin {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId         String   @unique // Auth0 user ID - one active planner per user
+  mealName       String
+  items          Json     // Array of menu items with their data
+  totalNutrition Json     // Total nutritional values
+  updatedAt      DateTime @updatedAt
+}
+
+model savedLogoff {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionId      String   @unique // Browser session identifier
+  mealName       String   @default("My Meal Planner")
+  items          Json     // Array of menu items with their data
+  totalNutrition Json     // Total nutritional values
+  updatedAt      DateTime @updatedAt
 }

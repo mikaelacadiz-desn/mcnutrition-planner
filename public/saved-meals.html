@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>My Saved Meals - McDonald's Nutrition</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.5/dist/purify.min.js"></script>
+  <script src="navbar-auth.js"></script>
+  <script src="saved-meals.js"></script>
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="navbar-left">
+      <img src="assets/logo.png" alt="Logo" class="navbar-logo" />
+      <a href="/index.html" class="navbar-link">Menu Planner</a>
+      <a href="/saved-meals.html" class="navbar-link active">Saved Meals</a>
+    </div>
+    <div class="navbar-right">
+      <img src="assets/login.svg" alt="Profile" class="profile-icon" id="profile-icon" />
+      <a href="#" class="navbar-login" id="auth-button">
+        <span id="auth-text">Login</span>
+      </a>
+      <a href="/logout" class="navbar-logout" id="logout-button" style="display: none;">
+        <img src="assets/logout.svg" alt="Logout" class="logout-icon" />
+      </a>
+    </div>
+  </nav>
+
+  <main class="saved-meals-page">
+    <header>
+      <h1>My Saved Meals</h1>
+      <p>View and manage your saved meal plans</p>
+    </header>
+
+    <div id="saved-meals-container" class="saved-meals-container">
+      <!-- Saved meals will be loaded here -->
+      <div class="loading-state">
+        <p>Loading your saved meals...</p>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

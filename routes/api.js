@@ -122,6 +122,235 @@ router.delete('/data/:id', async (req, res) => {
     }
 })
 
+// ----- SAVED MEALS ROUTES -----
+
+// Get all saved meals for logged-in user
+router.get('/saved-meals', async (req, res) => {
+    try {
+        if (!req.oidc?.isAuthenticated()) {
+            return res.status(401).json({ success: false, error: 'Not authenticated' });
+        }
+        
+        const userId = req.oidc.user.sub;
+        
+        const meals = await prisma.meals.findMany({
+            where: { userId: userId },
+            orderBy: { createdAt: 'desc' }
+        });
+        
+        res.json({ success: true, meals });
+    } catch (err) {
+        console.error('GET /saved-meals error:', err);
+        res.status(500).json({ success: false, error: 'Failed to fetch meals', details: err.message });
+    }
+});
+
+// Save a new meal
+router.post('/saved-meals', async (req, res) => {
+    try {
+        if (!req.oidc?.isAuthenticated()) {
+            return res.status(401).json({ success: false, error: 'Not authenticated' });
+        }
+        
+        const userId = req.oidc.user.sub;
+        const { mealName, items, totalNutrition } = req.body;
+        
+        console.log('Received meal save request:');
+        console.log('User ID:', userId);
+        console.log('Meal name:', mealName);
+        console.log('Items:', JSON.stringify(items, null, 2));
+        console.log('Total nutrition:', JSON.stringify(totalNutrition, null, 2));
+        
+        if (!mealName || !items || !totalNutrition) {
+            return res.status(400).json({ success: false, error: 'Missing required fields' });
+        }
+        
+        const savedMeal = await prisma.meals.create({
+            data: {
+                userId: userId,
+                mealName: mealName,
+                items: items,
+                totalNutrition: totalNutrition
+            }
+        });
+        
+        console.log('Meal saved successfully:', savedMeal.id);
+        res.json({ success: true, meal: savedMeal });
+    } catch (err) {
+        console.error('POST /saved-meals error:', err);
+        console.error('Error stack:', err.stack);
+        res.status(500).json({ success: false, error: 'Failed to save meal', details: err.message });
+    }
+});
+
+// Delete a saved meal
+router.delete('/saved-meals/:id', async (req, res) => {
+    try {
+        if (!req.oidc?.isAuthenticated()) {
+            return res.status(401).json({ success: false, error: 'Not authenticated' });
+        }
+        
+        const userId = req.oidc.user.sub;
+        const mealId = req.params.id;
+        
+        // Verify the meal belongs to the user
+        const meal = await prisma.meals.findUnique({
+            where: { id: mealId }
+        });
+        
+        if (!meal) {
+            return res.status(404).json({ success: false, error: 'Meal not found' });
+        }
+        
+        if (meal.userId !== userId) {
+            return res.status(403).json({ success: false, error: 'Not authorized' });
+        }
+        
+        await prisma.meals.delete({
+            where: { id: mealId }
+        });
+        
+        res.json({ success: true });
+    } catch (err) {
+        console.error('DELETE /saved-meals/:id error:', err);
+        res.status(500).json({ success: false, error: 'Failed to delete meal', details: err.message });
+    }
+});
+
+// ----- ACTIVE PLANNER AUTO-SAVE ROUTES -----
+
+// Get active planner state (logged-in or logged-out)
+router.get('/active-planner', async (req, res) => {
+    try {
+        const isAuthenticated = req.oidc?.isAuthenticated();
+        
+        if (isAuthenticated) {
+            // Get logged-in user's active planner
+            const userId = req.oidc.user.sub;
+            const planner = await prisma.savedLogin.findUnique({
+                where: { userId: userId }
+            });
+            
+            return res.json({ success: true, planner, authenticated: true });
+        } else {
+            // Get logged-out user's active planner by session ID
+            const sessionId = req.query.sessionId;
+            
+            if (!sessionId) {
+                return res.json({ success: true, planner: null, authenticated: false });
+            }
+            
+            const planner = await prisma.savedLogoff.findUnique({
+                where: { sessionId: sessionId }
+            });
+            
+            return res.json({ success: true, planner, authenticated: false });
+        }
+    } catch (err) {
+        console.error('GET /active-planner error:', err);
+        res.status(500).json({ success: false, error: 'Failed to fetch planner', details: err.message });
+    }
+});
+
+// Auto-save active planner state (upsert - update or create)
+router.post('/active-planner', async (req, res) => {
+    try {
+        const isAuthenticated = req.oidc?.isAuthenticated();
+        const { items, mealName, totalNutrition, sessionId } = req.body;
+        
+        if (!items || !mealName || !totalNutrition) {
+            return res.status(400).json({ success: false, error: 'Missing required fields' });
+        }
+        
+        if (isAuthenticated) {
+            // Save to savedLogin for authenticated users
+            const userId = req.oidc.user.sub;
+            
+            const planner = await prisma.savedLogin.upsert({
+                where: { userId: userId },
+                update: {
+                    items: items,
+                    mealName: mealName,
+                    totalNutrition: totalNutrition
+                },
+                create: {
+                    userId: userId,
+                    items: items,
+                    mealName: mealName,
+                    totalNutrition: totalNutrition
+                }
+            });
+            
+            console.log('Auto-saved to savedLogin for user:', userId);
+            return res.json({ success: true, planner, authenticated: true });
+        } else {
+            // Save to savedLogoff for logged-out users
+            if (!sessionId) {
+                return res.status(400).json({ success: false, error: 'Session ID required for logged-out users' });
+            }
+            
+            // Set expiration to 7 days from now
+            const expiresAt = new Date();
+            expiresAt.setDate(expiresAt.getDate() + 7);
+            
+            const planner = await prisma.savedLogoff.upsert({
+                where: { sessionId: sessionId },
+                update: {
+                    items: items,
+                    mealName: mealName,
+                    totalNutrition: totalNutrition,
+                    expiresAt: expiresAt
+                },
+                create: {
+                    sessionId: sessionId,
+                    items: items,
+                    mealName: mealName,
+                    totalNutrition: totalNutrition,
+                    expiresAt: expiresAt
+                }
+            });
+            
+            console.log('Auto-saved to savedLogoff for session:', sessionId);
+            return res.json({ success: true, planner, authenticated: false });
+        }
+    } catch (err) {
+        console.error('POST /active-planner error:', err);
+        res.status(500).json({ success: false, error: 'Failed to save planner', details: err.message });
+    }
+});
+
+// Clear active planner state (when user clicks "Clear All")
+router.delete('/active-planner', async (req, res) => {
+    try {
+        const isAuthenticated = req.oidc?.isAuthenticated();
+        
+        if (isAuthenticated) {
+            const userId = req.oidc.user.sub;
+            
+            await prisma.savedLogin.deleteMany({
+                where: { userId: userId }
+            });
+            
+            return res.json({ success: true, authenticated: true });
+        } else {
+            const sessionId = req.query.sessionId;
+            
+            if (!sessionId) {
+                return res.status(400).json({ success: false, error: 'Session ID required' });
+            }
+            
+            await prisma.savedLogoff.deleteMany({
+                where: { sessionId: sessionId }
+            });
+            
+            return res.json({ success: true, authenticated: false });
+        }
+    } catch (err) {
+        console.error('DELETE /active-planner error:', err);
+        res.status(500).json({ success: false, error: 'Failed to clear planner', details: err.message });
+    }
+});
+
 
 // export the api routes for use elsewhere in our app 
 // (e.g. in index.js )

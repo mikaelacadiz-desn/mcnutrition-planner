@@ -13,10 +13,14 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@auth0/auth0-spa-js": "^2.11.0",
     "@prisma/client": "^6.18.0",
-    "express": "^5.1.0"
+    "express": "^5.2.1",
+    "express-openid-connect": "^2.19.3"
   },
   "devDependencies": {
-    "prisma": "^6.18.0"
+    "@types/node": "^25.0.0",
+    "prisma": "^6.18.0",
+    "typescript": "^5.9.3"
   }
 }

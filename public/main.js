@@ -30,7 +30,7 @@ fetch('/data')
   .catch(error => {
     // Handle errors gracefully - show user-friendly error message
     console.error('Error fetching menu data:', error);
-    document.querySelector('main').innerHTML = '<p>Error loading menu data. Please try again later.</p>';
+    document.querySelector('.main-content').innerHTML = '<p>Error loading menu data. Please try again later.</p>';
   });
 
 

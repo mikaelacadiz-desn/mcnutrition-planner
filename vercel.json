@@ -4,17 +4,24 @@
     {
       "src": "server.js",
       "use": "@vercel/node"
-    },
-    {
-      "src": "public/**",
-      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
-      "src": "/data(.*)",
-      "dest": "server.js",
-      "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+      "src": "/api/(.*)",
+      "dest": "server.js"
+    },
+    {
+      "src": "/login",
+      "dest": "server.js"
+    },
+    {
+      "src": "/logout",
+      "dest": "server.js"
+    },
+    {
+      "src": "/callback",
+      "dest": "server.js"
     },
     {
       "src": "/(.*\\.(css|js|png|jpg|jpeg|svg|ico|json))",

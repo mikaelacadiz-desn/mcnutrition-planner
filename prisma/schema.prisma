@@ -46,10 +46,20 @@ model meals {
 
 model savedLogin {
   id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId         String   @unique // Auth0 user ID - one active planner per user
+  userId         String   // Auth0 user ID - multiple saved meals per user allowed
   mealName       String
   items          Json     // Array of menu items with their data
   totalNutrition Json     // Total nutritional values
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model activePlanner {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId         String   @unique // Auth0 user ID - one active planner per logged-in user
+  mealName       String   @default("My Meal Planner")
+  items          Json     // Array of menu items currently in planner
+  totalNutrition Json     // Current nutritional totals
   updatedAt      DateTime @updatedAt
 }
 

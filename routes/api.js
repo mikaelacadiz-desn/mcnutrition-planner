@@ -133,9 +133,9 @@ router.get('/saved-meals', async (req, res) => {
         
         const userId = req.oidc.user.sub;
         
-        const meals = await prisma.meals.findMany({
+        const meals = await prisma.savedLogin.findMany({
             where: { userId: userId },
-            orderBy: { createdAt: 'desc' }
+            orderBy: { updatedAt: 'desc' }
         });
         
         res.json({ success: true, meals });
@@ -165,7 +165,7 @@ router.post('/saved-meals', async (req, res) => {
             return res.status(400).json({ success: false, error: 'Missing required fields' });
         }
         
-        const savedMeal = await prisma.meals.create({
+        const savedMeal = await prisma.savedLogin.create({
             data: {
                 userId: userId,
                 mealName: mealName,
@@ -194,7 +194,7 @@ router.delete('/saved-meals/:id', async (req, res) => {
         const mealId = req.params.id;
         
         // Verify the meal belongs to the user
-        const meal = await prisma.meals.findUnique({
+        const meal = await prisma.savedLogin.findUnique({
             where: { id: mealId }
         });
         
@@ -206,7 +206,7 @@ router.delete('/saved-meals/:id', async (req, res) => {
             return res.status(403).json({ success: false, error: 'Not authorized' });
         }
         
-        await prisma.meals.delete({
+        await prisma.savedLogin.delete({
             where: { id: mealId }
         });
         
@@ -227,7 +227,7 @@ router.get('/active-planner', async (req, res) => {
         if (isAuthenticated) {
             // Get logged-in user's active planner
             const userId = req.oidc.user.sub;
-            const planner = await prisma.savedLogin.findUnique({
+            const planner = await prisma.activePlanner.findUnique({
                 where: { userId: userId }
             });
             
@@ -263,10 +263,10 @@ router.post('/active-planner', async (req, res) => {
         }
         
         if (isAuthenticated) {
-            // Save to savedLogin for authenticated users
+            // Save to activePlanner for authenticated users
             const userId = req.oidc.user.sub;
             
-            const planner = await prisma.savedLogin.upsert({
+            const planner = await prisma.activePlanner.upsert({
                 where: { userId: userId },
                 update: {
                     items: items,
@@ -327,7 +327,7 @@ router.delete('/active-planner', async (req, res) => {
         if (isAuthenticated) {
             const userId = req.oidc.user.sub;
             
-            await prisma.savedLogin.deleteMany({
+            await prisma.activePlanner.deleteMany({
                 where: { userId: userId }
             });
             

@@ -2,31 +2,25 @@
  * SAVED-MEALS.JS - Display and manage saved meals
  */
 
-document.addEventListener('DOMContentLoaded', function() {
-  loadSavedMeals();
+document.addEventListener('DOMContentLoaded', async function() {
+  await loadSavedMeals();
 });
 
-function loadSavedMeals() {
+async function loadSavedMeals() {
   const container = document.getElementById('saved-meals-container');
   
   try {
-    // Load saved meals from localStorage
-    const savedMealsData = localStorage.getItem('savedMeals');
+    // Fetch saved meals from MongoDB
+    const response = await fetch('/api/saved-meals');
+    const data = await response.json();
     
-    if (!savedMealsData) {
-      container.innerHTML = `
-        <div class="empty-saved-meals">
-          <h3>No saved meals yet</h3>
-          <p>Start creating meal plans and save them to see them here!</p>
-          <a href="/index.html" class="primary-btn">Create a Meal Plan</a>
-        </div>
-      `;
-      return;
+    if (!data.success) {
+      throw new Error(data.error || 'Failed to load meals');
     }
     
-    const meals = JSON.parse(savedMealsData);
+    const meals = data.meals || [];
     
-    if (!meals || meals.length === 0) {
+    if (meals.length === 0) {
       container.innerHTML = `
         <div class="empty-saved-meals">
           <h3>No saved meals yet</h3>
@@ -120,9 +114,9 @@ function createMealCard(meal) {
   
   // Add delete event listener
   const deleteBtn = card.querySelector('.delete-meal-btn');
-  deleteBtn.addEventListener('click', (e) => {
+  deleteBtn.addEventListener('click', async (e) => {
     e.stopPropagation();
-    deleteMeal(meal.id);
+    await deleteMeal(meal.id);
   });
   
   // Add load event listener
@@ -134,32 +128,42 @@ function createMealCard(meal) {
   return card;
 }
 
-function deleteMeal(mealId) {
+async function deleteMeal(mealId) {
   if (!confirm('Are you sure you want to delete this meal?')) {
     return;
   }
   
   try {
-    // Load saved meals from localStorage
-    const savedMealsData = localStorage.getItem('savedMeals');
-    if (!savedMealsData) {
-      alert('No saved meals found.');
-      return;
+    const response = await fetch(`/api/saved-meals/${mealId}`, {
+      method: 'DELETE'
+    });
+    
+    const data = await response.json();
+    
+    if (data.success) {
+      // Remove from UI
+      const mealCard = document.querySelector(`[data-meal-id="${mealId}"]`);
+      if (mealCard) {
+        mealCard.remove();
+      }
+      
+      // Check if there are any meals left
+      const container = document.getElementById('saved-meals-container');
+      if (container.children.length === 0) {
+        container.innerHTML = `
+          <div class="empty-saved-meals">
+            <h3>No saved meals yet</h3>
+            <p>Start creating meal plans and save them to see them here!</p>
+            <a href="/index.html" class="primary-btn">Create a Meal Plan</a>
+          </div>
+        `;
+      }
+    } else {
+      throw new Error(data.error || 'Failed to delete meal');
     }
-    
-    let meals = JSON.parse(savedMealsData);
-    
-    // Filter out the meal to delete
-    meals = meals.filter(meal => meal.id !== mealId);
-    
-    // Save back to localStorage
-    localStorage.setItem('savedMeals', JSON.stringify(meals));
-    
-    // Reload the display
-    loadSavedMeals();
   } catch (error) {
     console.error('Error deleting meal:', error);
-    alert('Error deleting meal. Please try again.');
+    alert('Error deleting meal: ' + error.message);
   }
 }
 

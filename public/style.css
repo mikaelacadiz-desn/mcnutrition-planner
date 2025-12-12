@@ -127,10 +127,10 @@ header p {
   color: #6c757d;
 }
 
-/* Main grid layout - 2/3 left, 1/3 right */
-main {
+/* Main grid layout - adjusted for side-by-side layout */
+main:not(.saved-meals-page) {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr 400px;
   gap: 2rem;
   max-width: 100%;
   margin: 2rem auto;
@@ -140,7 +140,7 @@ main {
 /* Left column - existing content */
 .main-content {
   width: 100%;
-  padding: 100px;
+  padding: 0;
 }
 
 /* Right column - new sidebar */
@@ -156,9 +156,10 @@ main {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 6rem;
-  max-height: calc(100vh - 8rem);
+  max-height: calc(100vh - 15rem);
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .planner-header {
@@ -576,7 +577,7 @@ main {
   font-family: 'Arimo', sans-serif;
   background: white;
   cursor: pointer;
-  padding: 2px solid #e9ecef;
+  padding: 0.75rem 1rem;
   min-width: 200px;
   transition: border-color 0.2s ease;
 }
@@ -593,8 +594,8 @@ main {
 /* Filter icon button */
 .filter-icon-btn {
   padding: 0.75rem;
-  background: white;
-  border: 2px solid #e9ecef;
+  background: transparent;
+  border: none;
   border-radius: 8px;
   cursor: pointer;
   display: flex;
@@ -606,7 +607,6 @@ main {
 }
 
 .filter-icon-btn:hover {
-  border-color: #ffbc0d;
   background: #f8f9fa;
 }
 
@@ -1130,14 +1130,14 @@ main {
 
 /* SAVED MEALS PAGE STYLES */
 .saved-meals-page {
-  max-width: 1400px;
+  max-width: 100%;
   margin: 2rem auto;
   padding: 0 100px;
 }
 
 .saved-meals-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 2rem;
   margin-top: 2rem;
 }
@@ -1398,9 +1398,15 @@ main {
 }
 
 /* Responsive saved meals */
-@media (max-width: 1200px) {
+@media (max-width: 1400px) {
   .saved-meals-container {
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1000px) {
+  .saved-meals-container {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 

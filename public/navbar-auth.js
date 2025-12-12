@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const authText = document.getElementById('auth-text');
     const logoutButton = document.getElementById('logout-button');
     const profileIcon = document.getElementById('profile-icon');
+    const savedMealsLink = document.getElementById('saved-meals-link');
     
     if (data.isAuthenticated) {
       // User is logged in - show user name and logout button
@@ -20,12 +21,22 @@ document.addEventListener('DOMContentLoaded', async function() {
       authButton.href = '#';
       authButton.style.pointerEvents = 'none'; // Make it non-clickable
       logoutButton.style.display = 'flex'; // Show logout button
+      
+      // Show saved meals link
+      if (savedMealsLink) {
+        savedMealsLink.style.display = 'block';
+      }
     } else {
       // User is not logged in - show login button
       authText.textContent = 'Login';
       authButton.href = '/login';
       authButton.style.pointerEvents = 'auto';
       logoutButton.style.display = 'none';
+      
+      // Hide saved meals link
+      if (savedMealsLink) {
+        savedMealsLink.style.display = 'none';
+      }
     }
   } catch (error) {
     console.error('Error checking authentication status:', error);

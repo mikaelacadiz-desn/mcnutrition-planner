@@ -350,40 +350,74 @@ window.clearAllItems = async function() {
 };
 
 // Save meal functionality
-window.saveMeal = function() {
+window.saveMeal = async function() {
   if (window.selectedMealItems.length === 0) {
     alert('Please add items to your meal plan before saving.');
     return;
   }
   
   try {
+    // Check if user is logged in
+    const authResponse = await fetch('/api/user');
+    const authData = await authResponse.json();
+    
+    if (!authData.isAuthenticated) {
+      // Store current meal in sessionStorage to restore after login
+      sessionStorage.setItem('pendingMeal', JSON.stringify({
+        items: window.selectedMealItems,
+        mealName: window.mealName
+      }));
+      // Redirect directly to login
+      window.location.href = '/login';
+      return;
+    }
+    
     // Calculate total nutrition
     const totalNutrition = calculateTotalNutrition();
     
-    // Prepare meal data
+    // Clean the items data - remove any ObjectId or _id fields
+    const cleanedItems = window.selectedMealItems.map(item => ({
+      id: item.id,
+      data: {
+        ITEM: item.data.ITEM,
+        CAL: item.data.CAL,
+        PRO: item.data.PRO,
+        CARB: item.data.CARB,
+        FAT: item.data.FAT,
+        SFAT: item.data.SFAT,
+        TFAT: item.data.TFAT,
+        CHOL: item.data.CHOL,
+        SALT: item.data.SALT,
+        FBR: item.data.FBR,
+        SGR: item.data.SGR,
+        CATEGORY: item.data.CATEGORY
+      }
+    }));
+    
+    // Prepare meal data for MongoDB
     const mealData = {
-      id: 'meal_' + Date.now() + '_' + Math.random().toString(36).substring(2, 15),
       mealName: window.mealName || 'My Meal Planner',
-      items: JSON.parse(JSON.stringify(window.selectedMealItems)),
-      totalNutrition: JSON.parse(JSON.stringify(totalNutrition)),
-      createdAt: new Date().toISOString()
+      items: cleanedItems,
+      totalNutrition: totalNutrition
     };
     
-    // Get existing saved meals from localStorage
-    let savedMeals = [];
-    const existing = localStorage.getItem('savedMeals');
-    if (existing) {
-      savedMeals = JSON.parse(existing);
+    // Save to MongoDB via API
+    const response = await fetch('/api/saved-meals', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(mealData)
+    });
+    
+    const result = await response.json();
+    
+    if (result.success) {
+      alert('Meal saved successfully!');
+      console.log('Meal saved to MongoDB:', result.meal.id);
+    } else {
+      throw new Error(result.error || 'Failed to save meal');
     }
-    
-    // Add new meal
-    savedMeals.push(mealData);
-    
-    // Save back to localStorage
-    localStorage.setItem('savedMeals', JSON.stringify(savedMeals));
-    
-    alert('Meal saved successfully!');
-    console.log('Meal saved to localStorage:', mealData.id);
   } catch (error) {
     console.error('Error saving meal:', error);
     alert('Error saving meal: ' + error.message);
@@ -480,6 +514,9 @@ async function checkPendingMeal() {
     try {
       const mealData = JSON.parse(pendingMeal);
       
+      // Clear the pending meal immediately to prevent duplicate saves
+      sessionStorage.removeItem('pendingMeal');
+      
       // Restore meal
       window.selectedMealItems = mealData.items;
       window.mealName = mealData.mealName;
@@ -496,6 +533,8 @@ async function checkPendingMeal() {
       await window.saveMeal();
     } catch (error) {
       console.error('Error restoring pending meal:', error);
+      // Clear pending meal even on error
+      sessionStorage.removeItem('pendingMeal');
     }
   }
 }
@@ -657,6 +696,31 @@ async function loadActivePlanner() {
     loadFromLocalStorage();
   }
 }
+
+// Handle logout - clear planner before logging out
+window.handleLogout = async function(event) {
+  event.preventDefault();
+  
+  // Clear all items from planner
+  window.selectedMealItems = [];
+  updatePlannerUI();
+  
+  // Clear from database
+  try {
+    await fetch(`/api/active-planner?sessionId=${getSessionId()}`, {
+      method: 'DELETE'
+    });
+  } catch (error) {
+    console.error('Error clearing planner on logout:', error);
+  }
+  
+  // Clear localStorage
+  localStorage.removeItem('unsavedMeal');
+  localStorage.removeItem('plannerSessionId');
+  
+  // Redirect to logout
+  window.location.href = '/logout';
+};
 
 // Initialize planner buttons
 document.addEventListener('DOMContentLoaded', async function() {

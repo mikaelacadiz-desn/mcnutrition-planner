@@ -5,6 +5,9 @@ const app = express();
 // import path module to help with file paths
 import path from 'path';
 
+// Middleware to parse JSON request bodies
+app.use(express.json())
+
 // Serve static files from the 'public' folder
 app.use(express.static('public'))
 
@@ -136,7 +139,7 @@ app.get('/api/secrets', async (req, res) => {
 
 // Import API routes for menu data
 import apiRoutes from './routes/api.js'
-app.use('/', apiRoutes)
+app.use('/api', apiRoutes)
 
 const port = 3001
 // Start Express

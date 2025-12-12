@@ -10,8 +10,15 @@ import { createNutritionalFilters } from './filter.js';
 
 // === FETCH MENU DATA ===
 // Fetch McDonald's menu data from local database API
-fetch('/data')
-  .then(response => response.json())
+fetch('/api/data')
+  .then(response => {
+    console.log('Response status:', response.status);
+    console.log('Response ok:', response.ok);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  })
   .then(menuItems => {
     // Log fetched data for debugging
     console.log('McDonald\'s Menu Items:', menuItems);

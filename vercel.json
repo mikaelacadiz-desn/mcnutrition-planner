@@ -12,24 +12,8 @@
       "dest": "server.js"
     },
     {
-      "src": "/login",
-      "dest": "server.js"
-    },
-    {
-      "src": "/logout",
-      "dest": "server.js"
-    },
-    {
-      "src": "/callback",
-      "dest": "server.js"
-    },
-    {
-      "src": "/(.*\\.(css|js|png|jpg|jpeg|svg|ico|json))",
-      "dest": "public/$1"
-    },
-    {
       "src": "/(.*)",
-      "dest": "public/$1"
+      "dest": "server.js"
     }
   ]
 }
